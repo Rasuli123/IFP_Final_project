@@ -1,0 +1,23 @@
+# .NET build files
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Local database
+*.db
+*.db-shm
+*.db-wal
+
+# Data protection keys
+**/App_Data/keys/
+
+# Local settings and secrets
+appsettings.Development.json
+
+# NuGet packages and generated assets
+.packages/
+vendor/
