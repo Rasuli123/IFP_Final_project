@@ -1,0 +1,21 @@
+<article class="book-tile">
+<a class="cover-link" href="/books/@Book.Id" tabindex="-1" aria-hidden="true">
+<BookCover Title="@Book.Title" Author="@Book.Author" Style="Book.CoverStyle" />
+</a>
+<div class="book-meta">
+<span class="category-text">@Book.Category</span>
+<h3>
+<a href="/books/@Book.Id">@Book.Title</a>
+</h3>
+<p>@Book.Author</p>
+<div class="book-bottom">
+<Badge Tone="@(Book.Available > 0 ? "green" : "amber")">@(Book.Available > 0 ? $"{Book.Available} available" : "All copies reserved / on loan")</Badge>
+<span>@Book.Shelf</span>
+</div>
+</div>
+</article>
+
+@code {
+    [Parameter, EditorRequired]
+    public BookCard Book { get; set; } = null!;
+}

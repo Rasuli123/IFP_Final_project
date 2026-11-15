@@ -1,0 +1,22 @@
+<div class="book-cover cover-@Style @(Large ? "large" : "")" aria-hidden="true">
+<div class="cover-line">
+</div>
+<span class="cover-author">@Author</span>
+<strong>@Title</strong>
+<span class="cover-symbol">✳</span>
+<small>RASULI’S COLLECTION</small>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    [Parameter]
+    public string Author { get; set; } = "";
+
+    [Parameter]
+    public int Style { get; set; }
+
+    [Parameter]
+    public bool Large { get; set; }
+}

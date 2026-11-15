@@ -1,0 +1,31 @@
+<Router AppAssembly="typeof(Program).Assembly">
+    <Found Context="route">
+        <AuthorizeRouteView RouteData="route" DefaultLayout="typeof(MainLayout)">
+            <NotAuthorized Context="routeAuth">
+                <AuthorizeView>
+<Authorized>
+<div class="empty-state">
+<h1>Access restricted</h1>
+<p>This page is for librarians.</p>
+<a class="button" href="/">Back to dashboard</a>
+</div>
+</Authorized>
+<NotAuthorized>
+<RedirectToLogin />
+</NotAuthorized>
+</AuthorizeView>
+            </NotAuthorized>
+        </AuthorizeRouteView>
+        <FocusOnNavigate RouteData="route" Selector="h1" />
+    </Found>
+    <NotFound>
+<LayoutView Layout="typeof(MainLayout)">
+<div class="empty-state">
+<h1>Page not found</h1>
+<p>Let's get you back to the library.</p>
+<a class="button" href="/catalog">Browse books</a>
+</div>
+</LayoutView>
+</NotFound>
+</Router>
+

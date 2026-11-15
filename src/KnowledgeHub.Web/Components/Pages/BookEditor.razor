@@ -1,0 +1,106 @@
+@page "/manage/books/new"
+@page "/manage/books/{Id:int}"
+@attribute [Authorize(Roles = "Librarian")]
+@inherits LibraryPage
+@inject NavigationManager Navigation
+<PageTitle>@(Id == 0 ? "Add a book" : "Edit book") · @AppInfo.Name</PageTitle>
+<a class="back-link" href="/catalog">← Back to catalog</a>
+<div class="page-heading">
+<div>
+<span class="eyebrow">CARE FOR THE COLLECTION</span>
+<h1>@(Id == 0 ? "A new addition" : "Edit this title")<span class="heading-dot">.</span>
+</h1>
+<p>Keep the details clear so the right reader finds the right book.</p>
+</div>
+</div>
+<Notice Message="@Message" Error="IsError" />
+@if (found)
+{
+<div class="editor-grid">
+<section class="panel padded">
+<EditForm Model="model" OnValidSubmit="Save" FormName="book">
+<DataAnnotationsValidator />
+<ValidationSummary />
+<div class="form-grid">
+<label class="full">Title<InputText @bind-Value="model.Title" maxlength="160" />
+</label>
+<label>Author<InputText @bind-Value="model.Author" maxlength="100" />
+</label>
+<label>ISBN (13 digits)<InputText @bind-Value="model.Isbn" maxlength="13" />
+</label>
+<label>Category<InputText @bind-Value="model.Category" list="categories" maxlength="50" />
+</label>
+<label>Publication year<InputNumber @bind-Value="model.Year" />
+</label>
+<label>Shelf location<InputText @bind-Value="model.Shelf" maxlength="30" />
+</label>
+<label>Cover design<InputSelect @bind-Value="model.CoverStyle">
+<option value="0">Sage green</option>
+<option value="1">Clay red</option>
+<option value="2">Golden ochre</option>
+<option value="3">Midnight blue</option>
+<option value="4">Parchment</option>
+<option value="5">Forest green</option>
+</InputSelect>
+</label>@if (Id == 0) {
+<label>Number of copies<InputNumber @bind-Value="copies" min="1" max="20" />
+</label> }
+<label class="full">Description<InputTextArea @bind-Value="model.Description" rows="4" maxlength="2000" />
+</label>
+</div>
+<datalist id="categories">@foreach (var category in Library.Categories()) {
+<option value="@category" /> }
+</datalist>
+<div class="button-row form-actions">
+<button type="submit" class="button" disabled="@Busy">Save book</button>
+<a class="button secondary" href="/catalog">Cancel</a>
+</div>
+</EditForm>
+</section>
+<aside class="editor-preview">
+<span class="eyebrow">COVER PREVIEW</span>
+<BookCover Title="@(model.Title == "" ? "Your next great read" : model.Title)" Author="@model.Author" Style="model.CoverStyle" Large="true" />
+<p class="muted">An original typographic cover keeps the catalog consistent.</p>
+</aside>
+</div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Book model = new();
+    private int copies = 1;
+    private bool found = true;
+    private int loadedId = -1;
+    protected override void Load()
+    {
+        if (loadedId == Id)
+            return;
+        var existing = Id == 0 ? new Book() : Library.Book(Id)?.Book;
+        found = existing is not null;
+        if (found)
+            model = existing!;
+        else
+        {
+            Message = "Book not found.";
+            IsError = true;
+        }
+
+        loadedId = Id;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Ready)
+            Reload();
+    }
+
+    private void Save()
+    {
+        var saved = 0;
+        Run(() => saved = Library.SaveBook(Actor, model, copies), "Book saved.");
+        if (!IsError)
+            Navigation.NavigateTo($"/books/{saved}");
+    }
+}

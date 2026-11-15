@@ -1,0 +1,85 @@
+@page "/catalog"
+@inherits LibraryPage
+@inject CatalogState State
+<PageTitle>Book catalog · @AppInfo.Name</PageTitle>
+<div class="page-heading">
+<div>
+<span class="eyebrow">FIND YOUR NEXT CHAPTER</span>
+<h1>The book catalog<span class="heading-dot">.</span>
+</h1>
+<p>Good ideas, great stories, and something unexpected.</p>
+</div>@if (Actor.IsLibrarian) {
+<a class="button" href="/manage/books/new">＋ Add a book</a> }
+</div>
+<Notice Message="@Message" Error="IsError" />
+<form class="catalog-toolbar" @onsubmit="Filter" @onsubmit:preventDefault>
+<div class="search-field">
+<label class="sr-only" for="book-search">Search by title, author, or ISBN</label>
+<span aria-hidden="true">⌕</span>
+<input id="book-search" placeholder="Search title, author, or ISBN…" @bind="State.Search" @bind:event="oninput" />
+<button type="submit" class="button small">Search</button>
+</div>
+<label class="filter-field">Category<select @bind="State.Category" @bind:after="Filter">
+<option value="">All categories</option>@foreach (var c in categories) {
+<option>@c</option> }
+</select>
+</label>
+<label class="filter-field">Sort by<select @bind="State.Sort" @bind:after="Filter">
+<option value="title">Title A–Z</option>
+<option value="author">Author A–Z</option>
+<option value="newest">Publication year</option>
+<option value="available">Availability</option>
+</select>
+</label>
+</form>
+<div class="results-strip">
+<span>
+<strong>@result.Total</strong> books to discover</span>
+<label class="check-label">
+<input type="checkbox" @bind="State.AvailableOnly" @bind:after="Filter" /> Available now</label>
+<button class="text-button" @onclick="Reset">Clear filters</button>
+</div>
+@if (result.Items.Count == 0) {
+<div class="panel empty-state">
+<span class="empty-icon">⌕</span>
+<h2>No matching books</h2>
+<p>Try a different title, author, or category.</p>
+<button class="button secondary" @onclick="Reset">Clear filters</button>
+</div> }
+else {
+<div class="book-grid">@foreach (var book in result.Items) {
+<BookTile Book="book" /> }
+</div> }
+<Pagination Page="result.Page" Pages="result.Pages" Total="result.Total" PageChanged="ChangePage" />
+
+@code {
+    private PageResult<BookCard> result = new([], 0, 1, 8);
+    private IReadOnlyList<string> categories = [];
+    protected override void Load()
+    {
+        result = Library.Catalog(State.Query);
+        State.Page = result.Page;
+        categories = Library.Categories();
+    }
+
+    private void Filter()
+    {
+        State.Page = 1;
+        Reload();
+    }
+
+    private void ChangePage(int page)
+    {
+        State.Page = page;
+        Reload();
+    }
+
+    private void Reset()
+    {
+        State.Search = "";
+        State.Category = "";
+        State.AvailableOnly = false;
+        State.Sort = "title";
+        Filter();
+    }
+}

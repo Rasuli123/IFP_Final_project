@@ -1,0 +1,60 @@
+@page "/reservations"
+@attribute [Authorize]
+@inherits LibraryPage
+<PageTitle>Reservations · @AppInfo.Name</PageTitle>
+<div class="page-heading">
+<div>
+<span class="eyebrow">A PLACE IN THE QUEUE</span>
+<h1>Reservations<span class="heading-dot">.</span>
+</h1>
+<p>@(Actor.IsLibrarian ? "Make sure every waiting reader gets their turn." : "Your next reads, patiently waiting for their moment.")</p>
+</div>
+<a class="button secondary" href="/catalog">Explore books →</a>
+</div>
+<Notice Message="@Message" Error="IsError" />
+<div class="stats-grid three">
+<StatCard Label="Ready for pickup" Value="holds.Count(h => h.Status == HoldStatus.Ready)" Hint="A copy has been set aside" />
+<StatCard Label="Waiting in queue" Value="holds.Count(h => h.Status == HoldStatus.Queued)" Hint="First come, first served" />
+<StatCard Label="Pickup window" Value="48" Hint="Hours from becoming ready" />
+</div>
+<section class="panel">
+<DataTable TItem="HoldView" Items="holds" EmptyTitle="No active reservations" EmptyText="Reserve a title in the catalog to save your place.">
+<Header>
+<th>Book</th>@if (Actor.IsLibrarian) {
+<th>Member</th> }
+<th>Status</th>
+<th>Pickup deadline (UTC)</th>
+<th>Action</th>
+</Header>
+<Row Context="hold">
+<td>
+<a class="table-title" href="/books/@hold.BookId">@hold.Title</a>
+<small>Reserved @hold.CreatedAt.ToString("dd MMM yyyy")</small>
+</td>@if (Actor.IsLibrarian) {
+<td>@hold.MemberName</td> }
+<td>
+<Badge Tone="@(hold.Status == HoldStatus.Ready ? "green" : "amber")">@(hold.Status == HoldStatus.Ready ? "Ready for pickup" : $"Queue position {hold.Position}")</Badge>
+</td>
+<td>@(hold.ExpiresAt?.ToString("dd MMM, HH:mm") ?? "Waiting for a return")</td>
+<td>
+<div class="button-row">@if (Actor.IsLibrarian && hold.Status == HoldStatus.Ready) {
+<button class="button small" @onclick='() => Run(() => Library.Issue(Actor, hold.BookId, hold.MemberId), "Reserved copy issued.")'>Issue copy</button> }
+<button class="text-button danger" @onclick='() => Run(() => Library.CancelHold(Actor, hold.Id), "Reservation cancelled.")'>Cancel</button>
+</div>
+</td>
+</Row>
+</DataTable>
+</section>
+<div class="policy-note">
+<strong>How the queue works</strong>
+<p>Available copies are held immediately. Otherwise, the next returned copy goes to the earliest reservation. Holds expire after 48 hours and pass to the next reader. You can have up to 3 active reservations.</p>
+</div>
+
+@code {
+    private IReadOnlyList<HoldView> holds = [];
+    protected override void Load()
+    {
+        if (Actor.Id != "")
+            holds = Library.Holds(Actor);
+    }
+}

@@ -1,0 +1,66 @@
+@page "/loans"
+@attribute [Authorize]
+@inherits LibraryPage
+<PageTitle>Loans · @AppInfo.Name</PageTitle>
+<div class="page-heading">
+<div>
+<span class="eyebrow">KEEP THE STORIES MOVING</span>
+<h1>@(Actor.IsLibrarian ? "Circulation desk" : "Your bookshelf")<span class="heading-dot">.</span>
+</h1>
+<p>@(Actor.IsLibrarian ? "Manage loans, renewals, and the journey back to the shelf." : "Keep track of your books and make time for the next chapter.")</p>
+</div>
+<a class="button" href="/catalog">@(Actor.IsLibrarian ? "Issue a book ↗" : "Find another book ↗")</a>
+</div>
+<Notice Message="@Message" Error="IsError" />
+<div class="tabs" role="group" aria-label="Filter loans">
+<button class="@(filter == "active" ? "selected" : "")" @onclick='() => SetFilter("active")'>Active loans</button>
+<button class="@(filter == "overdue" ? "selected" : "")" @onclick='() => SetFilter("overdue")'>Overdue</button>
+<button class="@(filter == "history" ? "selected" : "")" @onclick='() => SetFilter("history")'>Return history</button>
+</div>
+<section class="panel">
+<DataTable TItem="LoanView" Items="Filtered" EmptyTitle="All clear" EmptyText="There are no loans in this view.">
+<Header>
+<th>Book / copy</th>@if (Actor.IsLibrarian) {
+<th>Member</th> }
+<th>Due date (UTC)</th>
+<th>Status</th>
+<th>Actions</th>
+</Header>
+<Row Context="loan">
+<td>
+<a class="table-title" href="/books/@loan.BookId">@loan.Title</a>
+<small class="mono">@loan.Barcode</small>
+</td>@if (Actor.IsLibrarian) {
+<td>@loan.MemberName</td> }
+<td>@loan.DueAt.ToString("dd MMM yyyy")<small>@(loan.Renewals > 0 ? "Renewed once" : "14-day loan")</small>
+</td>
+<td>
+<Badge Tone="@(loan.ReturnedAt is not null ? "gray" : loan.DueAt < DateTime.UtcNow ? "red" : "green")">@(loan.ReturnedAt is not null ? "Returned" : loan.DueAt < DateTime.UtcNow ? "Overdue" : "On loan")</Badge>
+</td>
+<td>
+<div class="button-row">@if (loan.ReturnedAt is null) { @if (loan.Renewals == 0 && loan.DueAt >= DateTime.UtcNow) {
+<button class="button secondary small" disabled="@Busy" @onclick='() => Run(() => Library.Renew(Actor, loan.Id), "Loan renewed for another 14 days.")'>Renew</button> } @if (Actor.IsLibrarian) {
+<button class="button small" disabled="@Busy" @onclick='() => Run(() => Library.Return(Actor, loan.Id), "Return recorded. Waiting reservations have been updated.")'>Return</button> } }
+</div>
+</td>
+</Row>
+</DataTable>
+</section>
+<div class="policy-note">
+<strong>A little borrowing etiquette</strong>
+<p>Borrow up to 5 books for 14 days. Renew once when nobody else is waiting. Return overdue books before borrowing again. All due dates use UTC.</p>
+</div>
+
+@code {
+    private IReadOnlyList<LoanView> loans = [];
+    private string filter = "active";
+    private IReadOnlyList<LoanView> Filtered => loans.Where(l => filter == "history" ? l.ReturnedAt is not null : l.ReturnedAt is null && (filter != "overdue" || l.DueAt < DateTime.UtcNow)).ToList();
+
+    protected override void Load()
+    {
+        if (Actor.Id != "")
+            loans = Library.Loans(Actor, true);
+    }
+
+    private void SetFilter(string value) => filter = value;
+}

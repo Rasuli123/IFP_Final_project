@@ -1,0 +1,36 @@
+@page "/Account/Settings"
+@attribute [Authorize]
+@attribute [ExcludeFromInteractiveRouting]
+<PageTitle>Account settings · @AppInfo.Name</PageTitle>
+<div class="page-heading">
+<div>
+<span class="eyebrow">YOUR ACCOUNT</span>
+<h1>Keep it secure<span class="heading-dot">.</span>
+</h1>
+<p>Changing your password signs out your existing sessions.</p>
+</div>
+</div>
+<Notice Message="@Error" Error="true" />
+<section class="panel padded narrow">
+<h2>Change password</h2>
+<form action="/auth/password" method="post" class="stacked-form" data-enhance="false">
+<AntiforgeryToken />
+<label for="current">Current password</label>
+<input id="current" name="current" type="password" autocomplete="current-password" required maxlength="128" />
+<label for="password">New password</label>
+<input id="password" name="password" type="password" autocomplete="new-password" required minlength="10" maxlength="128" />
+<small>Use 10–128 characters, including uppercase, lowercase, and a number.</small>
+<label for="confirm">Confirm new password</label>
+<input id="confirm" name="confirm" type="password" autocomplete="new-password" required maxlength="128" />
+<button class="button" type="submit">Update password</button>
+</form>
+</section>
+<form action="/auth/logout" method="post" data-enhance="false" class="form-actions">
+<AntiforgeryToken />
+<button class="button secondary" type="submit">Sign out</button>
+</form>
+
+@code {
+    [SupplyParameterFromQuery(Name = "error")]
+    public string? Error { get; set; }
+}

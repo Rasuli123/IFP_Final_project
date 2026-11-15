@@ -1,0 +1,104 @@
+@page "/members"
+@attribute [Authorize(Roles = "Librarian")]
+@inherits LibraryPage
+@inject IAccountService Accounts
+
+<PageTitle>Members · @AppInfo.Name</PageTitle>
+<div class="page-heading">
+    <div>
+<span class="eyebrow">MEMBER ACCOUNTS</span>
+<h1>Library members<span class="heading-dot">.</span>
+</h1>
+<p>Create accounts and check borrowing status.</p>
+</div>
+    <button class="button" @onclick="() => showForm = !showForm">@(showForm ? "Close form" : "＋ Add member")</button>
+</div>
+<Notice Message="@Message" Error="IsError" />
+
+@if (showForm)
+{
+    <section class="panel padded member-form">
+        <h2>New member</h2>
+        <EditForm Model="newMember" OnValidSubmit="CreateMember" FormName="member">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-grid">
+                <label>Full name<InputText id="member-name" @bind-Value="newMember.Name" maxlength="80" />
+</label>
+                <label>Username<InputText id="member-username" @bind-Value="newMember.Username" maxlength="30" />
+</label>
+                <label>Email<InputText id="member-email" type="email" @bind-Value="newMember.Email" maxlength="200" />
+</label>
+                <label>Initial password<InputText id="member-password" type="password" @bind-Value="newMember.Password" maxlength="128" autocomplete="new-password" />
+</label>
+            </div>
+            <p class="muted">Use 10–128 characters with uppercase, lowercase, and a number. The member can change this password in Account.</p>
+            <button class="button" type="submit" disabled="@Busy">Create member</button>
+        </EditForm>
+    </section>
+}
+
+<div class="search-field standalone">
+    <label class="sr-only" for="member-search">Find a member</label>
+    <input id="member-search" placeholder="Search name, username, or email…" @bind="search" @bind:event="oninput" />
+</div>
+<section class="panel">
+    <DataTable TItem="MemberView" Items="Filtered" EmptyTitle="No matching members" EmptyText="Add a member or use the registration page.">
+        <Header>
+<th>Member</th>
+<th>Username / email</th>
+<th>Active loans</th>
+<th>Account standing</th>
+</Header>
+        <Row Context="member">
+            <td>
+<div class="member-name">
+<span class="avatar pale">@member.Name[..1]</span>
+<strong>@member.Name</strong>
+</div>
+</td>
+            <td>@member.Username<small>@member.Email</small>
+</td>
+            <td>@member.ActiveLoans / @LendingRules.MaximumLoans</td>
+            <td>
+<Badge Tone="@(member.OverdueLoans > 0 ? "red" : "green")">@(member.OverdueLoans > 0 ? $"{member.OverdueLoans} overdue" : "Good standing")</Badge>
+</td>
+        </Row>
+    </DataTable>
+</section>
+
+@code {
+    private IReadOnlyList<MemberView> members = [];
+    private string search = "";
+    private bool showForm;
+    private MemberForm newMember = new();
+    private IReadOnlyList<MemberView> Filtered => members.Where(member => member.Name.Contains(search, StringComparison.OrdinalIgnoreCase) || member.Username.Contains(search, StringComparison.OrdinalIgnoreCase) || member.Email.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+
+    protected override void Load()
+    {
+        if (Actor.IsLibrarian)
+            members = Library.Members(Actor);
+    }
+
+    private void CreateMember() => Run(() =>
+    {
+        Accounts.Register(newMember.Name, newMember.Email, newMember.Password, newMember.Username);
+        newMember = new();
+        showForm = false;
+        Changes.Publish();
+    }, "Member account created.");
+    private sealed class MemberForm
+    {
+        [Required, StringLength(80, MinimumLength = 2)]
+        public string Name { get; set; } = "";
+
+        [Required, StringLength(30, MinimumLength = 3)]
+        public string Username { get; set; } = "";
+
+        [Required, EmailAddress, StringLength(200)]
+        public string Email { get; set; } = "";
+
+        [Required, StringLength(128, MinimumLength = 10)]
+        public string Password { get; set; } = "";
+    }
+}

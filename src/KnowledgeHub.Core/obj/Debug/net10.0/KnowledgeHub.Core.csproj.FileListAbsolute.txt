@@ -1,0 +1,11 @@
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Core\bin\Debug\net10.0\KnowledgeHub.Core.deps.json
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Core\bin\Debug\net10.0\KnowledgeHub.Core.dll
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Core\bin\Debug\net10.0\KnowledgeHub.Core.pdb
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Core\obj\Debug\net10.0\KnowledgeHub.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Core\obj\Debug\net10.0\KnowledgeHub.Core.AssemblyInfoInputs.cache
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Core\obj\Debug\net10.0\KnowledgeHub.Core.AssemblyInfo.cs
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Core\obj\Debug\net10.0\KnowledgeHub.Core.csproj.CoreCompileInputs.cache
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Core\obj\Debug\net10.0\KnowledgeHub.Core.dll
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Core\obj\Debug\net10.0\refint\KnowledgeHub.Core.dll
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Core\obj\Debug\net10.0\KnowledgeHub.Core.pdb
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Core\obj\Debug\net10.0\ref\KnowledgeHub.Core.dll

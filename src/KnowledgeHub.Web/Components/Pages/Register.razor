@@ -1,0 +1,33 @@
+@page "/Account/Register"
+@layout AuthLayout
+@attribute [ExcludeFromInteractiveRouting]
+
+<PageTitle>Create account · @AppInfo.Name</PageTitle>
+<span class="eyebrow">JOIN THE HUB</span>
+<h2>Create a member account.</h2>
+<p class="muted">Reserve books and keep track of your borrowing.</p>
+<Notice Message="@Error" Error="true" />
+
+<form action="/auth/register" method="post" class="stacked-form" data-enhance="false">
+    <AntiforgeryToken />
+    <label for="name">Full name</label>
+    <input id="name" name="name" autocomplete="name" required minlength="2" maxlength="80" />
+    <label for="username">Username</label>
+    <input id="username" name="username" autocomplete="username" required minlength="3" maxlength="30" aria-describedby="username-help" />
+    <small id="username-help">3–30 letters, numbers, dots, underscores, or hyphens. Start with a letter or number.</small>
+    <label for="email">Email address</label>
+    <input id="email" name="email" type="email" autocomplete="email" required maxlength="200" />
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="new-password" required minlength="10" maxlength="128" aria-describedby="password-help" />
+    <small id="password-help">10–128 characters, including uppercase, lowercase, and a number.</small>
+    <label for="confirm">Confirm password</label>
+    <input id="confirm" name="confirm" type="password" autocomplete="new-password" required maxlength="128" />
+    <button class="button" type="submit">Create member account →</button>
+</form>
+<p class="auth-switch">Already registered? <a href="/Account/Login">Sign in</a>
+</p>
+
+@code {
+    [SupplyParameterFromQuery(Name = "error")]
+    public string? Error { get; set; }
+}

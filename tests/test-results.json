@@ -1,0 +1,373 @@
+{
+  "generatedUtc": "2026-11-15T13:58:46.2782311Z",
+  "passed": 61,
+  "failed": 12,
+  "totalMilliseconds": 13679.6108,
+  "tests": [
+    {
+      "name": "UNIT: Borrowing accepts a member below the limit",
+      "passed": true,
+      "milliseconds": 2.1282
+    },
+    {
+      "name": "UNIT: Borrowing rejects the fifth active loan limit",
+      "passed": true,
+      "milliseconds": 0.3668
+    },
+    {
+      "name": "UNIT: Overdue loans prevent borrowing",
+      "passed": true,
+      "milliseconds": 0.1132
+    },
+    {
+      "name": "UNIT: Renewal extends the existing due date by 14 days",
+      "passed": true,
+      "milliseconds": 0.5984
+    },
+    {
+      "name": "UNIT: Returned loans cannot be renewed",
+      "passed": true,
+      "milliseconds": 0.1142
+    },
+    {
+      "name": "UNIT: Overdue loans cannot be renewed",
+      "passed": true,
+      "milliseconds": 0.1246
+    },
+    {
+      "name": "UNIT: Renewal is limited to once",
+      "passed": true,
+      "milliseconds": 0.1269
+    },
+    {
+      "name": "UNIT: Waiting readers block renewal",
+      "passed": true,
+      "milliseconds": 0.1064
+    },
+    {
+      "name": "UNIT: Due date boundary is inclusive",
+      "passed": true,
+      "milliseconds": 0.0526
+    },
+    {
+      "name": "UNIT: Member cannot access another member",
+      "passed": true,
+      "milliseconds": 0.3054
+    },
+    {
+      "name": "UNIT: Librarian can manage a member record",
+      "passed": true,
+      "milliseconds": 0.0352
+    },
+    {
+      "name": "UNIT: Page count rounds up",
+      "passed": true,
+      "milliseconds": 0.4059
+    },
+    {
+      "name": "UNIT: Empty results retain one page",
+      "passed": true,
+      "milliseconds": 0.0524
+    },
+    {
+      "name": "DB: SQLite opens and persists UTF-8 text",
+      "passed": true,
+      "milliseconds": 289.4933
+    },
+    {
+      "name": "DB: Foreign keys reject an orphan loan",
+      "passed": true,
+      "milliseconds": 238.5817
+    },
+    {
+      "name": "DB: Transaction rolls back every change on failure",
+      "passed": true,
+      "milliseconds": 242.1376
+    },
+    {
+      "name": "ACCOUNT: Passwords are hashed and credentials authenticate",
+      "passed": true,
+      "milliseconds": 302.3912
+    },
+    {
+      "name": "ACCOUNT: Wrong and nonexistent credentials fail",
+      "passed": true,
+      "milliseconds": 354.2134
+    },
+    {
+      "name": "ACCOUNT: Email uniqueness ignores case",
+      "passed": true,
+      "milliseconds": 290.125
+    },
+    {
+      "name": "ACCOUNT: Registration validates name, email, and password",
+      "passed": true,
+      "milliseconds": 237.6199
+    },
+    {
+      "name": "ACCOUNT: Five failed logins trigger a timed lockout",
+      "passed": true,
+      "milliseconds": 656.1938
+    },
+    {
+      "name": "ACCOUNT: Password change rotates session stamp",
+      "passed": true,
+      "milliseconds": 469.9677
+    },
+    {
+      "name": "ACCOUNT: Wrong current password cannot change credentials",
+      "passed": true,
+      "milliseconds": 294.1473
+    },
+    {
+      "name": "ACCOUNT: Username and email both authenticate",
+      "passed": true,
+      "milliseconds": 348.383
+    },
+    {
+      "name": "ACCOUNT: Duplicate usernames ignore case",
+      "passed": true,
+      "milliseconds": 297.1301
+    },
+    {
+      "name": "ACCOUNT: Invalid usernames are rejected",
+      "passed": true,
+      "milliseconds": 238.8282
+    },
+    {
+      "name": "ACCOUNT: Public registration always creates a member",
+      "passed": true,
+      "milliseconds": 289.7837
+    },
+    {
+      "name": "DB: Legacy accounts survive the username migration",
+      "passed": true,
+      "milliseconds": 30.2444
+    },
+    {
+      "name": "DEMO: Only admin and rasuli are seeded with working passwords",
+      "passed": true,
+      "milliseconds": 563.6996
+    },
+    {
+      "name": "CATALOG: Search, category, and pagination compose",
+      "passed": true,
+      "milliseconds": 316.2698
+    },
+    {
+      "name": "CATALOG: Search treats SQL punctuation as literal text",
+      "passed": true,
+      "milliseconds": 255.7733
+    },
+    {
+      "name": "CATALOG: ISBN duplication and invalid input fail cleanly",
+      "passed": true,
+      "milliseconds": 255.8408
+    },
+    {
+      "name": "CATALOG: Optimistic version rejects stale edits",
+      "passed": true,
+      "milliseconds": 256.5333
+    },
+    {
+      "name": "ACCESS: Member cannot change catalog or issue loans",
+      "passed": true,
+      "milliseconds": 253.9251
+    },
+    {
+      "name": "ACCESS: Forged librarian role is checked against database",
+      "passed": true,
+      "milliseconds": 250.8561
+    },
+    {
+      "name": "LOAN: Issue and return update availability and history",
+      "passed": true,
+      "milliseconds": 274.8683
+    },
+    {
+      "name": "LOAN: Double return fails without changing state",
+      "passed": true,
+      "milliseconds": 253.7977
+    },
+    {
+      "name": "LOAN: Duplicate title and exhausted copies are rejected",
+      "passed": true,
+      "milliseconds": 252.1899
+    },
+    {
+      "name": "LOAN: Fifth loan limit is enforced through the service",
+      "passed": true,
+      "milliseconds": 305.5379
+    },
+    {
+      "name": "LOAN: Overdue borrower is blocked",
+      "passed": true,
+      "milliseconds": 253.6329
+    },
+    {
+      "name": "LOAN: Member only reads their own loans",
+      "passed": true,
+      "milliseconds": 264.2825
+    },
+    {
+      "name": "LOAN: Member cannot return or renew another member\u0027s loan",
+      "passed": true,
+      "milliseconds": 257.2188
+    },
+    {
+      "name": "LOAN: Renewal persists and cannot repeat",
+      "passed": true,
+      "milliseconds": 261.9664
+    },
+    {
+      "name": "HOLD: Available copy becomes a 48-hour pickup hold",
+      "passed": true,
+      "milliseconds": 255.7635
+    },
+    {
+      "name": "HOLD: Duplicate reservation and reservation limit fail",
+      "passed": true,
+      "milliseconds": 281.4929
+    },
+    {
+      "name": "HOLD: Borrowed title cannot be reserved by same member",
+      "passed": true,
+      "milliseconds": 252.5688
+    },
+    {
+      "name": "HOLD: Ready copy cannot be issued to a different member",
+      "passed": true,
+      "milliseconds": 258.9552
+    },
+    {
+      "name": "HOLD: Return promotes earliest waiting reservation",
+      "passed": true,
+      "milliseconds": 269.3895
+    },
+    {
+      "name": "HOLD: Cancellation promotes the next reader",
+      "passed": true,
+      "milliseconds": 279.9181
+    },
+    {
+      "name": "HOLD: Expiry at exactly 48 hours passes the copy onward",
+      "passed": true,
+      "milliseconds": 274.5512
+    },
+    {
+      "name": "HOLD: Member cannot cancel another member\u0027s hold",
+      "passed": true,
+      "milliseconds": 256.6852
+    },
+    {
+      "name": "HOLD: Adding a copy serves a waiting reservation",
+      "passed": true,
+      "milliseconds": 262.6783
+    },
+    {
+      "name": "CATALOG: Active loans prevent archiving and retirement",
+      "passed": true,
+      "milliseconds": 258.6909
+    },
+    {
+      "name": "CATALOG: Archiving preserves history and removes availability",
+      "passed": true,
+      "milliseconds": 269.0858
+    },
+    {
+      "name": "DB: Unique index prevents two active loans on one copy",
+      "passed": true,
+      "milliseconds": 256.6748
+    },
+    {
+      "name": "CONCURRENCY: Two borrowers racing for one copy yield one loan",
+      "passed": true,
+      "milliseconds": 267.2023
+    },
+    {
+      "name": "CONCURRENCY: Duplicate reservation race yields one hold",
+      "passed": true,
+      "milliseconds": 299.949
+    },
+    {
+      "name": "REPORT: Counts and audit reflect committed operations",
+      "passed": true,
+      "milliseconds": 253.4728
+    },
+    {
+      "name": "STATE: Successful writes publish and subscribers can detach",
+      "passed": true,
+      "milliseconds": 246.2982
+    },
+    {
+      "name": "RESILIENCE: Failed writes do not publish or create records",
+      "passed": true,
+      "milliseconds": 250.3442
+    },
+    {
+      "name": "PERFORMANCE: Paged catalog over 2,000 titles stays bounded",
+      "passed": true,
+      "milliseconds": 262.8578
+    },
+    {
+      "name": "HTTP: Health endpoint succeeds",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    },
+    {
+      "name": "HTTP: Anonymous member data redirects to login",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    },
+    {
+      "name": "HTTP: Catalog is publicly readable",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    },
+    {
+      "name": "HTTP: POST without antiforgery token returns a helpful 400",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    },
+    {
+      "name": "HTTP: Empty sign-in page has no phantom notices",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    },
+    {
+      "name": "HTTP: Login feedback is rendered and HTML encoded",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    },
+    {
+      "name": "HTTP: Member login sets authenticated cookie",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    },
+    {
+      "name": "HTTP: Member reserve and renewal buttons are enabled",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    },
+    {
+      "name": "HTTP: Member cannot access librarian page or CSV",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    },
+    {
+      "name": "HTTP: Blazor browser runtime is served",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    },
+    {
+      "name": "HTTP: Sign out removes access",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    },
+    {
+      "name": "HTTP: Admin username login enables book editing",
+      "passed": false,
+      "error": "An attempt was made to access a socket in a way forbidden by its access permissions. (127.0.0.1:5097)"
+    }
+  ]
+}

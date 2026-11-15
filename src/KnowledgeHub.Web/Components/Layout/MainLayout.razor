@@ -1,0 +1,86 @@
+@inherits LayoutComponentBase
+@inject CatalogState CatalogState
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="shell">
+    <aside class="sidebar">
+        <a class="brand" href="/">
+<span class="brand-mark">R</span>
+<span>@AppInfo.Name<small>YOUR COMMUNITY LIBRARY</small>
+</span>
+</a>
+        <span class="nav-label">WORKSPACE</span>
+        <nav aria-label="Main navigation">
+            <NavLink href="/" Match="NavLinkMatch.All">
+<span aria-hidden="true">◫</span> Overview</NavLink>
+            <NavLink href="/catalog">
+<span aria-hidden="true">▤</span> Book catalog</NavLink>
+            <AuthorizeView>
+<Authorized Context="auth">
+                <NavLink href="/loans">
+<span aria-hidden="true">↗</span> @(auth.User.IsInRole("Librarian") ? "Circulation" : "My loans")</NavLink>
+                <NavLink href="/reservations">
+<span aria-hidden="true">◷</span> Reservations</NavLink>
+            </Authorized>
+</AuthorizeView>
+            <AuthorizeView Roles="Librarian">
+<NavLink href="/members">
+<span aria-hidden="true">♧</span> Members</NavLink>
+<NavLink href="/reports">
+<span aria-hidden="true">▥</span> Reports</NavLink>
+</AuthorizeView>
+            <AuthorizeView>
+<NavLink href="/Account/Settings" data-enhance-nav="false">
+<span aria-hidden="true">⚙</span> Account</NavLink>
+</AuthorizeView>
+        </nav>
+        <div class="sidebar-note">
+<span class="tiny-label">A LITTLE REMINDER</span>
+<p>A good book is always<br />worth making time for.</p>
+<span class="note-rule">
+</span>
+</div>
+        <AuthorizeView>
+<Authorized Context="auth">
+<div class="profile">
+<span class="avatar">@((auth.User.Identity?.Name ?? "R")[..1])</span>
+<div>
+<strong>@auth.User.Identity?.Name</strong>
+<small>@(auth.User.IsInRole("Librarian") ? "Admin" : "Library member")</small>
+</div>
+</div>
+<div class="account-actions">
+<a href="/Account/Settings" data-enhance-nav="false">Account</a>
+<form action="/auth/logout" method="post" data-enhance="false">
+<AntiforgeryToken />
+<button type="submit" class="text-button">Sign out</button>
+</form>
+</div>
+</Authorized>
+<NotAuthorized>
+<a class="button light" href="/Account/Login" data-enhance-nav="false">Sign in</a>
+</NotAuthorized>
+</AuthorizeView>
+    </aside>
+    <div class="workspace">
+<header class="topbar">
+<span>Library workspace <span class="top-slash">/</span> <strong>@AppInfo.Name</strong>
+</span>
+<span class="top-status">
+<i>
+</i> Open for discovery</span>
+</header>
+        <main id="main" tabindex="-1">
+<CascadingValue Value="CatalogState">
+<ErrorBoundary>
+<ChildContent>@Body</ChildContent>
+<ErrorContent>
+<div class="notice error" role="alert">Something went wrong. <a href="/">Reload your workspace</a>.</div>
+</ErrorContent>
+</ErrorBoundary>
+</CascadingValue>
+</main>
+        <footer>@AppInfo.Name <span>Find your next chapter.</span>
+</footer>
+    </div>
+</div>
+

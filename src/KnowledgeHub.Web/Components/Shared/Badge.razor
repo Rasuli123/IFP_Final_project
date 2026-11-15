@@ -1,0 +1,9 @@
+<span class="badge @Tone">@ChildContent</span>
+
+@code {
+    [Parameter]
+    public string Tone { get; set; } = "green";
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

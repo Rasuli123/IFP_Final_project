@@ -1,0 +1,53 @@
+@page "/Account/Login"
+@layout AuthLayout
+@attribute [ExcludeFromInteractiveRouting]
+@inject IWebHostEnvironment Environment
+
+<PageTitle>Sign in · @AppInfo.Name</PageTitle>
+<span class="eyebrow">WELCOME TO THE HUB</span>
+<h2>Sign in to your library.</h2>
+<p class="muted">Manage your books, loans, and reservations.</p>
+<Notice Message="@Error" Error="true" />
+<Notice Message="@Message" />
+
+@* A normal POST establishes the authentication cookie before Blazor connects. *@
+<form action="/auth/login" method="post" class="stacked-form" data-enhance="false">
+    <AntiforgeryToken />
+    <label for="login">Username or email</label>
+    <input id="login" name="login" autocomplete="username" required maxlength="200" placeholder="admin or rasuli" />
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required maxlength="128" />
+    <button class="button" type="submit">Sign in →</button>
+</form>
+<p class="auth-switch">New member? <a href="/Account/Register">Create an account</a>
+</p>
+<a class="muted" href="/catalog">Browse books without signing in</a>
+
+@if (Environment.IsDevelopment())
+{
+    <div class="demo-accounts">
+        <strong>Local demo accounts</strong>
+        <p>
+<b>Admin</b>
+<br />
+<code>admin</code>
+<br />
+<code>Admin2026!</code>
+</p>
+        <p>
+<b>Member</b>
+<br />
+<code>rasuli</code>
+<br />
+<code>Rasuli2026!</code>
+</p>
+    </div>
+}
+
+@code {
+    [SupplyParameterFromQuery(Name = "error")]
+    public string? Error { get; set; }
+
+    [SupplyParameterFromQuery(Name = "message")]
+    public string? Message { get; set; }
+}

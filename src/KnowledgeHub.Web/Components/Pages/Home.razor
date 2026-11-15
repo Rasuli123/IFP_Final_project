@@ -1,0 +1,100 @@
+@page "/"
+@attribute [Authorize]
+@inherits LibraryPage
+<PageTitle>Overview · @AppInfo.Name</PageTitle>
+<div class="page-heading">
+<div>
+<span class="eyebrow">YOUR LIBRARY, AT A GLANCE</span>
+<h1>Hello, @DisplayName.Split(' ')[0]<span class="heading-dot">.</span>
+</h1>
+<p>@(Actor.IsLibrarian ? "A little organization. A lot of discovery." : "A new story is waiting for you on the shelf.")</p>
+</div>
+<a href="/catalog" class="button">Browse catalog <span aria-hidden="true">↗</span>
+</a>
+</div>
+<Notice Message="@Message" Error="IsError" />
+@if (Ready)
+{
+    @if (dashboard is not null)
+    {
+        <div class="stats-grid">
+<StatCard Label="Books in collection" Value="dashboard.Titles" Hint="Unique titles to discover" />
+<StatCard Label="Available copies" Value="dashboard.Available" Hint="Ready for the next reader" />
+<StatCard Label="Currently on loan" Value="dashboard.ActiveLoans" Hint="Books out in the world" />
+<StatCard Label="Overdue returns" Value="dashboard.OverdueLoans" Hint="Need a little attention" />
+</div>
+    }
+    else
+    {
+        <div class="stats-grid">
+<StatCard Label="On your bookshelf" Value="loans.Count" Hint="Up to 5 books at a time" />
+<StatCard Label="Ready for pickup" Value="holds.Count(h => h.Status == HoldStatus.Ready)" Hint="Collect within 48 hours" />
+<StatCard Label="In your queue" Value="holds.Count(h => h.Status == HoldStatus.Queued)" Hint="We save your place" />
+<StatCard Label="Overdue" Value="loans.Count(l => l.DueAt < DateTime.UtcNow)" Hint="Return these before borrowing" />
+</div>
+    }
+    <section class="reading-banner">
+<div>
+<span class="eyebrow">MAKE ROOM FOR DISCOVERY</span>
+<h2>Between the covers,<br />
+<em>there's a whole new world.</em>
+</h2>
+<p>Explore the collection and find your next great read.</p>
+<a href="/catalog" class="button light">Explore the shelves <span aria-hidden="true">→</span>
+</a>
+</div>
+<div class="banner-books" aria-hidden="true">
+<div class="spine">STORIES THAT STAY</div>
+<div class="spine">THE ART OF CURIOSITY</div>
+<div class="spine">ONE MORE CHAPTER</div>
+</div>
+</section>
+    <div class="section-heading">
+<h2>@(Actor.IsLibrarian ? "Circulation desk" : "Your next returns")</h2>
+<a href="/loans">View all loans →</a>
+</div>
+    <section class="panel">
+<DataTable TItem="LoanView" Items="loans.Take(4).ToList()" EmptyTitle="Your shelf is clear" EmptyText="Browse the catalog to find your next book.">
+<Header>
+<th>Book</th>@if (Actor.IsLibrarian) {
+<th>Member</th> }
+<th>Due date (UTC)</th>
+<th>Status</th>
+</Header>
+<Row Context="loan">
+<td>
+<a class="table-title" href="/books/@loan.BookId">@loan.Title</a>
+<small>@loan.Author</small>
+</td>@if (Actor.IsLibrarian) {
+<td>@loan.MemberName</td> }
+<td>@loan.DueAt.ToString("dd MMM yyyy")</td>
+<td>
+<Badge Tone="@(loan.DueAt < DateTime.UtcNow ? "red" : "green")">@(loan.DueAt < DateTime.UtcNow ? "Overdue" : "On loan")</Badge>
+</td>
+</Row>
+</DataTable>
+</section>
+    <div class="section-heading">
+<h2>A few books to explore</h2>
+<a href="/catalog">See the collection →</a>
+</div>
+<div class="book-grid">@foreach (var book in featured) {
+<BookTile Book="book" /> }
+</div>
+}
+
+@code {
+    private Dashboard? dashboard;
+    private IReadOnlyList<LoanView> loans = [];
+    private IReadOnlyList<HoldView> holds = [];
+    private IReadOnlyList<BookCard> featured = [];
+    protected override void Load()
+    {
+        if (Actor.Id == "")
+            return;
+        dashboard = Actor.IsLibrarian ? Library.Dashboard(Actor) : null;
+        loans = Library.Loans(Actor);
+        holds = Library.Holds(Actor);
+        featured = Library.Catalog(new(Sort: "newest", PageSize: 4)).Items;
+    }
+}

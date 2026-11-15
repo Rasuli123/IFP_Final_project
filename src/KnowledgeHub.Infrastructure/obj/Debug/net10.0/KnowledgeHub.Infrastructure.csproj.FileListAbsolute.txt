@@ -1,0 +1,15 @@
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\bin\Debug\net10.0\KnowledgeHub.Infrastructure.deps.json
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\bin\Debug\net10.0\KnowledgeHub.Infrastructure.dll
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\bin\Debug\net10.0\KnowledgeHub.Infrastructure.pdb
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\bin\Debug\net10.0\KnowledgeHub.Core.dll
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\bin\Debug\net10.0\KnowledgeHub.Core.pdb
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\obj\Debug\net10.0\KnowledgeHub.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\obj\Debug\net10.0\KnowledgeHub.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\obj\Debug\net10.0\KnowledgeHub.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\obj\Debug\net10.0\KnowledgeHub.Infrastructure.AssemblyInfo.cs
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\obj\Debug\net10.0\KnowledgeHub.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\obj\Debug\net10.0\Knowledg.CC3B4DE6.Up2Date
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\obj\Debug\net10.0\KnowledgeHub.Infrastructure.dll
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\obj\Debug\net10.0\refint\KnowledgeHub.Infrastructure.dll
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\obj\Debug\net10.0\KnowledgeHub.Infrastructure.pdb
+C:\Users\Alireza.R\Desktop\IT\Forth Trimester\IFP\RasuliKnowledgeHub\src\KnowledgeHub.Infrastructure\obj\Debug\net10.0\ref\KnowledgeHub.Infrastructure.dll

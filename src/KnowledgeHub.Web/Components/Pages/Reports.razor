@@ -1,0 +1,81 @@
+@page "/reports"
+@attribute [Authorize(Roles = "Librarian")]
+@inherits LibraryPage
+<PageTitle>Reports · @AppInfo.Name</PageTitle>
+<div class="page-heading">
+<div>
+<span class="eyebrow">THE STORY IN THE NUMBERS</span>
+<h1>Library insights<span class="heading-dot">.</span>
+</h1>
+<p>A clear view of your collection and its readers.</p>
+</div>
+<a class="button" href="/reports/loans.csv" data-enhance-nav="false" download>↓ Export loan report</a>
+</div>
+<Notice Message="@Message" Error="IsError" />
+@if (data is not null)
+{
+    <div class="stats-grid">
+<StatCard Label="Registered members" Value="data.Members" Hint="Your reading community" />
+<StatCard Label="Physical copies" Value="data.Copies" Hint="Active collection" />
+<StatCard Label="Active reservations" Value="data.Reservations" Hint="Ready or waiting" />
+<StatCard Label="Overdue loans" Value="data.OverdueLoans" Hint="Follow up at the desk" />
+</div>
+    <div class="report-grid">
+<section class="panel padded">
+<div class="section-heading">
+<h2>Collection by category</h2>
+</div>@foreach (var c in data.Categories) {
+<div class="bar-row">
+<div>
+<span>@c.Category</span>
+<strong>@c.Count</strong>
+</div>
+<div class="bar-track">
+<div style="width:@((int)(100.0 * c.Count / Math.Max(1, data.Titles)))%">
+</div>
+</div>
+</div> }
+</section>
+<section class="panel padded">
+<div class="section-heading">
+<h2>Most borrowed</h2>
+</div>@if (data.Popular.Count == 0) {
+<p class="muted">Borrowing insights will appear after the first loan.</p> }@foreach (var b in data.Popular) {
+<div class="popular-row">
+<span class="ranking">@(++rank)</span>
+<strong>@b.Title</strong>
+<Badge Tone="gray">@b.Count loans</Badge>
+</div> }@{ rank = 0; }
+</section>
+</div>
+    <div class="section-heading">
+<h2>Recent activity</h2>
+<span>Latest 8 events</span>
+</div>
+<section class="panel">
+<DataTable TItem="AuditEntry" Items="data.Recent">
+<Header>
+<th>Event</th>
+<th>Details</th>
+<th>Time (UTC)</th>
+</Header>
+<Row Context="entry">
+<td>
+<strong>@entry.Action</strong>
+</td>
+<td>@entry.Detail</td>
+<td>@entry.At.ToString("dd MMM yyyy, HH:mm")</td>
+</Row>
+</DataTable>
+</section>
+}
+
+@code {
+    private Dashboard? data;
+    private int rank;
+    protected override void Load()
+    {
+        if (Actor.IsLibrarian)
+            data = Library.Dashboard(Actor);
+    }
+}

@@ -1,0 +1,21 @@
+<div class="pagination">
+<span>@Total titles · Page @Page of @Pages</span>
+<div>
+<button class="button secondary small" disabled="@(Page <= 1)" @onclick="() => PageChanged.InvokeAsync(Page - 1)">Previous</button>
+<button class="button secondary small" disabled="@(Page >= Pages)" @onclick="() => PageChanged.InvokeAsync(Page + 1)">Next</button>
+</div>
+</div>
+
+@code {
+    [Parameter]
+    public int Page { get; set; }
+
+    [Parameter]
+    public int Pages { get; set; }
+
+    [Parameter]
+    public int Total { get; set; }
+
+    [Parameter]
+    public EventCallback<int> PageChanged { get; set; }
+}

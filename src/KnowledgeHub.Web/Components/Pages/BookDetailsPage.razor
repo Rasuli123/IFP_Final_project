@@ -1,0 +1,130 @@
+@page "/books/{Id:int}"
+@inherits LibraryPage
+@inject NavigationManager Navigation
+<PageTitle>@(details?.Book.Title ?? "Book details") · @AppInfo.Name</PageTitle>
+<a class="back-link" href="/catalog">← Back to the catalog</a>
+<Notice Message="@Message" Error="IsError" />
+@if (details is not null)
+{
+    <section class="book-detail">
+<div class="detail-art">
+<BookCover Title="@details.Book.Title" Author="@details.Book.Author" Style="details.Book.CoverStyle" Large="true" />
+</div>
+<div class="detail-copy">
+<span class="eyebrow">@details.Book.Category</span>
+<h1>@details.Book.Title</h1>
+<p class="detail-author">by @details.Book.Author</p>
+<div class="detail-badges">
+<Badge>@details.Copies.Count(c => c.Status == "Available") copies available</Badge>
+<Badge Tone="amber">@details.QueueLength waiting</Badge>
+</div>
+<p class="description">@details.Book.Description</p>
+<dl class="book-facts">
+<div>
+<dt>Published</dt>
+<dd>@details.Book.Year</dd>
+</div>
+<div>
+<dt>ISBN</dt>
+<dd>@details.Book.Isbn</dd>
+</div>
+<div>
+<dt>Shelf location</dt>
+<dd>@details.Book.Shelf</dd>
+</div>
+<div>
+<dt>Loan period</dt>
+<dd>14 days</dd>
+</div>
+</dl>
+    @if (Actor.IsLibrarian)
+    {
+        <div class="action-box">
+<label for="issue-member">Issue to a member</label>
+<select id="issue-member" @bind="memberId">
+<option value="">Choose a member</option>@foreach (var m in members) {
+<option value="@m.Id">@m.Name (@m.ActiveLoans loans)</option> }
+</select>
+<button class="button" disabled="@(Busy || string.IsNullOrEmpty(memberId))" @onclick="Issue">Issue book</button>
+<small>Existing pickup holds are honored automatically.</small>
+</div>
+<div class="button-row">
+<a class="button secondary" href="/manage/books/@Id">Edit book</a>
+<button class="button secondary" @onclick='() => Run(() => Library.AddCopy(Actor, Id), "A new copy has been added.")'>＋ Add copy</button>
+<button class="text-button danger" @onclick="() => confirmArchive = true">Archive title</button>
+</div>
+    }
+    else if (Actor.Id != "")
+    {
+<button class="button" disabled="@Busy" @onclick='() => Run(() => Library.Reserve(Actor, Id), "Reservation placed. Check Reservations for your pickup status.")'>Reserve this book</button>
+<p class="muted">Available books are held for 48 hours. Otherwise, you'll join the waiting queue.</p> }
+    else {
+<a class="button" href="/Account/Login" data-enhance-nav="false">Sign in to reserve</a> }
+    </div>
+</section>
+    @if (confirmArchive) {
+<div class="notice warning" role="alert">
+<strong>Archive this title?</strong> It will leave the catalog. Loan history will remain.<div class="button-row">
+<button class="button danger-button" @onclick="Archive">Confirm archive</button>
+<button class="button secondary" @onclick="() => confirmArchive = false">Keep title</button>
+</div>
+</div> }
+    <div class="section-heading">
+<h2>Copies on the shelf</h2>
+<span>@details.Copies.Count copies registered</span>
+</div>
+<section class="panel">
+<DataTable TItem="CopyView" Items="details.Copies">
+<Header>
+<th>Copy barcode</th>
+<th>Status</th>@if (Actor.IsLibrarian) {
+<th>Action</th> }
+</Header>
+<Row Context="copy">
+<td class="mono">@copy.Barcode</td>
+<td>
+<Badge Tone="@(copy.Status == "Available" ? "green" : "amber")">@copy.Status</Badge>
+</td>@if (Actor.IsLibrarian) {
+<td>@if (copy.Status == "Available") {
+<button class="text-button danger" @onclick='() => Run(() => Library.RetireCopy(Actor, copy.Id), "Copy retired. Its history is preserved.")'>Retire copy</button> }
+</td> }
+</Row>
+</DataTable>
+</section>
+}
+else if (Ready) {
+<div class="empty-state">
+<h1>Book not found</h1>
+<p>This title may have been archived.</p>
+<a href="/catalog">Browse the catalog</a>
+</div> }
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private BookDetails? details;
+    private IReadOnlyList<MemberView> members = [];
+    private string memberId = "";
+    private bool confirmArchive;
+    protected override void Load()
+    {
+        details = Library.Book(Id);
+        if (Actor.IsLibrarian)
+            members = Library.Members(Actor);
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Ready)
+            Reload();
+    }
+
+    private void Issue() => Run(() => Library.Issue(Actor, Id, memberId), "Book issued for 14 days.");
+    private void Archive()
+    {
+        Run(() => Library.ArchiveBook(Actor, Id), "Title archived.");
+        if (!IsError)
+            Navigation.NavigateTo("/catalog");
+    }
+}
