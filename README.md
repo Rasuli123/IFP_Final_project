@@ -171,19 +171,7 @@ The browser suite compiles, but this managed environment could not start its hea
 | 19. Professionalism | Validated source, role separation, preserved history and clean source package |
 | 20. Presentation | Linked defense deck and the demonstration plan below |
 
-This evidence supports the rubric; it does not guarantee full marks or replace the mandatory defense. Before public deployment, configure HTTPS, production admin credentials (`KnowledgeHub__AdminEmail` / `KnowledgeHub__AdminPassword`), allowed hosts, protected key storage and tested backups. Production startup does not create the public demo accounts. Only the initial production admin is seeded; create members through the application.
-
-## Presentation and defense
-
-[Open the project presentation](https://chatgpt.com/space/page_072494e3dbd081918fcde5032026565f). The title slide should identify **Alireza Rasuli**. The requested slide redesign, presenter-name update and final-slide removal are still pending because the slide editor was unavailable. The work is individual, and the mandatory defense lasts **15–20 minutes**.
-
-Explain the aim: replace manual lending records with searchable inventory and reliable reservations. Goals are correct copy tracking, clear member/admin workflows and persistent history. The development method is incremental: define rules and mockups, build the database/services, connect reusable screens, then test edge cases and demonstrate the result.
-
-For comparison, discuss manual records (little setup, manual validation), an established integrated library system such as Koha (broader institutional scope), and this focused teaching project (smaller, inspectable lending workflow). Explain choosing Blazor for shared C# UI/server logic and SQLite for a local database without a separate server. A JavaScript frontend plus API or a server database would add deployment pieces and offer different scaling options.
-
-Suggested timing: 2 minutes on the problem/aim, 2 on comparison and architecture, 7 on the live demo, 3 on database/rules/security, and 3–5 on tests, limitations and questions. Demo with a new one-copy book: admin creates a member and title; rasuli reserves; admin issues; rasuli renews; admin returns; both review the updated history. Use separate browser profiles or a private window for the two accounts.
-
-Be ready to explain why books and copies are separate, how a transaction prevents double lending, why passwords are hashed, why hiding a button alone is insufficient authorization, and how a change reaches another open browser. Understand and be able to explain every submitted part of your individual project.
+This evidence supports the rubric; it does not guarantee full marks or replace the mandatory defense. Before public deployment, configure HTTPS, production admin credentials (`KnowledgeHub__AdminEmail` / `KnowledgeHub__AdminPassword`), allowed hosts, protected key storage and tested backups. Production startup does not create the public demo accounts. Only the initial production admin is seeded; create members through the application. 
 
 ## Included dependency
 
